@@ -39,8 +39,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the package and the dev tools
+        # The floors are the dev group's, quoted so the shell passes `>=8` to pip instead of
+        # redirecting standard output into a file named `=8`. `test_ci_tool_versions.py` keeps the
+        # two files in step; unquoted here, the specifier would not fail this line, it would vanish
+        # from it.
         run: |
-          python -m pip install --quiet . pytest ruff mypy
+          python -m pip install --quiet . "pytest>=8" "ruff>=0.6" "mypy>=1.11"
 
       - name: Tests
         run: python -m pytest

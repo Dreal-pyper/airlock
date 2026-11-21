@@ -29,7 +29,7 @@ jobs:
       # pytest on PATH it falls back to a hardcoded count, so the gate fails any change that
       # adds a test. Same install as ci.yml, so the two jobs count the same suite the same way.
       - name: Install the package and pytest
-        run: python -m pip install --quiet . pytest
+        run: python -m pip install --quiet . "pytest>=8"
 
       - name: ROADMAP.md was updated
         env:

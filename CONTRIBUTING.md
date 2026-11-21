@@ -11,10 +11,14 @@ same bar. The design lives in [`PRD.md`](PRD.md), [`ARCHITECTURE.md`](ARCHITECTU
    phase and say why.
 2. Check its dependencies are done. If they are not, stop and say so.
 3. Write the failing test or fixture first, then the smallest change that passes.
-4. Run `python -m pytest`, `ruff check .`, `ruff format --check .` and `mypy src`.
+4. Run `python -m pytest`, `ruff check .`, `ruff format --check .`, `mypy src` and
+   `airlock scan --mode full .`. The last one is the tool judging its own repository; a HIGH
+   finding there is a change to the rule data, not a scan to re-run.
 5. **Update `ROADMAP.md` in the same pull request**: tick or add tasks, add a changelog row
-   with a UTC date, refresh the progress table and the `Last updated` line. A change is not
-   finished until the roadmap is current.
+   with a UTC date, refresh the progress table and the `Last updated` line. The three roadmap
+   gates check that you did: `sh scripts/check_roadmap_touched.sh origin/main`,
+   `python scripts/roadmap_progress.py --check` and `python scripts/sync_readme.py --check`.
+   A change is not finished until the roadmap is current.
 6. Update any document the change touches. If the code contradicts a doc, fix the doc.
 7. If you changed a rule, run `python scripts/build_site.py` and commit the regenerated
    `site/` files. CI fails a stale page, because the published rule reference is generated from

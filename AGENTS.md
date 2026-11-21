@@ -63,6 +63,7 @@ mypy src
 python -m airlock scan --mode full             # self-scan; must report no HIGH findings
 scripts/check_roadmap_touched.sh               # the PR must change ROADMAP.md and its timestamp
 python scripts/roadmap_progress.py --check     # the progress table must match the task lines
+python scripts/sync_readme.py --check          # the README test counts must match the collected suite
 ```
 
 If a command does not exist yet, say so in the PR instead of silently skipping it.

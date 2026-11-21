@@ -56,6 +56,7 @@ separate job:
 ```bash
 scripts/check_roadmap_touched.sh origin/main
 python scripts/roadmap_progress.py --check
+python scripts/sync_readme.py --check
 ```
 
 If a command does not exist on your branch, say so in the pull request instead of skipping it.

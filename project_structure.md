@@ -53,7 +53,9 @@ airlock/
       stellar_seed.py              # offline plaintext tracked-file seeds, D-06 KEEP (P1)                   (6.3)
       cargo_vectors.py             # Cargo patch, Git and escaped path dependency checks (P1)                 (9.14)
       npm_registry.py              # package-lock resolved-host check (P1)                                   (9.12)
+      native_binary.py             # tracked ELF and Mach-O binaries, reported as metadata (P1)              (9.23)
     report/
+      __init__.py                  # package docstring; every reporter imports only from model               (2.9)
       console.py                   # (2.9)
       github.py                    # annotations with escaping, HIGH first, caps                             (2.9)
       jsonout.py                   # (2.9)

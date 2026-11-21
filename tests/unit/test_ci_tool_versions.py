@@ -255,8 +255,14 @@ def installs() -> list[InstallLine]:
 
 
 class TestTheDeclaredFloors:
-    def test_the_dev_group_is_the_thing_being_read(self, declared_floors: dict[str, str]) -> None:
-        assert sorted(declared_floors) == ["mypy", "pytest", "ruff"]
+    def test_the_dev_group_declares_every_tool_ci_installs(
+        self, declared_floors: dict[str, str], installs: list[InstallLine]
+    ) -> None:
+        installed = {
+            spec.name for entry in installs for spec in entry.specs if not spec.is_local_path
+        }
+        missing = sorted(installed - set(declared_floors))
+        assert not missing, f"CI installs {missing} and pyproject declares no floor for it"
 
     def test_every_floor_names_a_lower_bound_not_an_exact_pin(
         self, declared_floors: dict[str, str]
@@ -265,8 +271,16 @@ class TestTheDeclaredFloors:
         for name, floor in declared_floors.items():
             assert floor.startswith(">="), f"{name} declares {floor!r}, which is not a floor"
 
-    def test_the_group_is_what_the_issue_records(self, declared_floors: dict[str, str]) -> None:
-        assert declared_floors == {"pytest": ">=8", "ruff": ">=0.6", "mypy": ">=1.11"}
+    def test_the_floors_the_issue_records_are_still_those_floors(
+        self, declared_floors: dict[str, str]
+    ) -> None:
+        # The group is read, not copied, so the assertion is per tool. Membership is not asserted:
+        # a tool can join the group for local reports without joining any workflow, and `coverage`
+        # did exactly that in PR #128. `compare` keeps the direction that does matter.
+        for name, floor in {"pytest": ">=8", "ruff": ">=0.6", "mypy": ">=1.11"}.items():
+            assert declared_floors.get(name) == floor, (
+                f"#102 records {name}>={floor[2:]}, the group says {declared_floors.get(name)!r}"
+            )
 
 
 class TestQuotingInPlace:
